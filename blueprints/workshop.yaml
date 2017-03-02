@@ -1,0 +1,45 @@
+title: Workshop
+'@extends':
+    type: default
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+
+      fields:
+        content:
+          type: tab
+          title: Workshop
+
+          fields:
+            header.title:
+              type: text
+              label: Theme/Title
+              
+            header.subtitle:
+              type: text
+              label: Subtitle (Speaker Name, Week 1, etc...)
+              
+
+            header.mainimage:
+              type: pagemediaselect
+              label: Image/video to show on front page with summary
+
+            content:
+              label: About/Summary
+              
+            uploads:
+              type: pagemedia
+              label: Uploads for this Meeting
+              
+            header.meetingdate:
+              type: datetime
+              label: Date
+              
+			header.taxonomy:
+              type: taxonomy
+              label: Tags (Be consistent with these, and avoid using any student-work tags.)
+              multiple: true
+              validate:
+                type: array

@@ -1,0 +1,36 @@
+title: Error
+'@extends':
+  type: error
+  context: blueprints://pages
+
+rules:
+  slug:
+    pattern: "[a-zа-я][a-zа-я0-9_\-]+"
+    min: 2
+    max: 80
+
+form:
+
+  fields:
+
+    tabs:
+      type: tabs
+      active: 1
+
+      fields:
+        content:
+          type: tab
+          title: Error Messages
+
+          fields:
+            header.title:
+              type: text
+              autofocus: true
+              style: vertical
+              label: Collection Name
+
+            content:
+                type: markdown
+                label: Base Text (Appears Above/Below Each)
+                validate:
+                  type: textarea

@@ -1,0 +1,15 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+	{% set pattern = sitewide.media[sitewide.header.pattern].url() %}
+	<div id="contentWrapper">
+		<section class="heading">
+	        <div id="background" style="background-image: url({{ pattern }});"></div>
+	        	<div id="foreground">
+					<div class="content">
+					<h2 id="areaTitle" class="center">{{ page.header.menu ? page.header.menu : page.header.title }}</h2>
+		            {{ page.content }}
+					</div>
+		        </div>
+		    </header>
+{% endblock %}

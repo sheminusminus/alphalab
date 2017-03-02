@@ -1,0 +1,40 @@
+title: Student Work
+'@extends':
+    type: default
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+
+      fields:
+        content:
+          type: tab
+          title: Student Work
+
+          fields:
+            header.title:
+              type: text
+              label: Work/Project Title
+              
+            header.student:
+              type: text
+              label: Student(s)
+              
+            header.taxonomy:
+              type: taxonomy
+              label: Type of Work (Select All that Apply)
+              multiple: true
+              validate:
+                type: array
+
+            header.mainimage:
+              type: pagemediaselect
+              label: Main Image (Select from uploads)
+
+            content:
+              label: About
+              
+            uploads:
+              type: pagemedia
+              label: Uploaded Files & Media

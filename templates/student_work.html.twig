@@ -1,0 +1,119 @@
+<!-- Wrapper -->
+{% if index is defined %} 
+	{% set taxons = [] %}
+	{% for tax in module.taxonomy|ksort %}
+		{% for key, value in tax %}
+			{% set taxons = taxons|merge([value]) %}
+		{% endfor %}
+	{% endfor %}
+    {% set modId = str_replace(' ', '-', module.header.title|lower) %}
+    {% if index % 2 == 0 %}
+	    <section id="{{ modId }}" class="module heading{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+	        <div class="moduleContent">
+	            <div class="content">
+	                <a href="{{ module.url|absolute_url }}">
+	                	<h2 class="workTitle">
+	                		{{ module.header.title }} <i class="fa fa-arrow-circle-o-right"></i>
+	                	</h2>
+	                	<h4 class="creator">
+	                		{{ module.header.student }}<br/>
+	                		<h5>{% for cat in taxons %}
+	                			[ {{ cat }} ]
+	                		{% endfor %}</h5>
+	                	</h4>
+		            	<div class="mainImage">{{ module.media[module.header.mainimage] }}</div>
+					</a>
+	                {{ module.content|markdown }}
+	            </div>
+	        </div>
+	    </section>
+	{% else %}
+	    <section id="{{ modId }}" class="module heading spotlight{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+	        <div class="moduleContent">
+	            <div class="content">
+	                <a href="{{ module.url|absolute_url }}">
+	                	<h2 class="workTitle">
+	                		<i class="fa fa-arrow-circle-o-left"></i> {{ module.header.title }}
+	                	</h2>
+	                	<h4 class="creator">
+	                		{{ module.header.student }}<br/>
+	                		<h5>{% for cat in taxons %}
+	                			[ {{ cat }} ]
+	                		{% endfor %}</h5>
+	                	</h4>
+		            	<div class="mainImage">{{ module.media[module.header.mainimage].display('thumbnail') }}</div>
+	                </a>
+	                {{ module.content|markdown }}
+	            </div>
+	        </div>
+	    </section>
+	{% endif %}
+{% else %}
+	{% embed 'partials/base.html.twig' %}
+	{% block content %}
+	{% set taxons = [] %}
+	{% for tax in page.taxonomy|ksort %}
+		{% for key, value in tax %}
+			{% set taxons = taxons|merge([value]) %}
+		{% endfor %}
+	{% endfor %}
+    {% set modId = str_replace(' ', '-', page.header.title|lower) %}
+	<div id="contentWrapper">
+		<section id="{{ str_replace(' ', '-', page.title|lower) }}" class="module heading{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+		    <div class="moduleContent">
+		        <div class="content">
+		            <h2 class="workTitle">{{page.title }}</h2>
+		            <h4 class="creator">
+	                	{{ page.header.student }}
+	                </h4>
+	                <h5>{% for cat in taxons %}
+	                	[ {{ cat }} ]
+	                {% endfor %}</h5>
+		        </div>
+    			{{ page.content|markdown }}	
+		    </div>
+		</section>
+		<section id="{{ str_replace(' ', '-', page.title|lower) }}-f" class="module heading files">	
+		    <div class="moduleContent">
+				<div class="content">
+					<script>
+						window.grabText = function(fileUrl, idx) {
+							
+							var xhr = new XMLHttpRequest();
+							xhr.open('GET', fileUrl, true);
+							xhr.addEventListener('load', function(evt) {
+								console.log(evt.target.responseText);
+								var codeblock = document.querySelector('#codefile-' + idx);
+								var ext = fileUrl.substring(fileUrl.lastIndexOf('.')+1, fileUrl.length);
+								codeblock.classList.add(ext);
+								codeblock.innerHTML = evt.target.responseText;
+								hljs.highlightBlock(document.querySelector('#codefile-' + idx));
+							});
+							xhr.send();
+							
+						};
+					</script>
+			{% set idx = 0 %}
+			{% if page.media[page.header.mainimage] is defined %}
+				<div id="mainImage">{{ mainimage.html() }}</div>
+			{% endif %}
+			{% for img in page.media.images %}
+				{{ img.display('thumbnail').html() }}
+			{% endfor %}
+			{% for f in page.media.files %}
+				{% include 'partials/highlight.html.twig' %}
+				{% set idx = idx + 1 %}
+			{% endfor %}
+			{% for vid in page.media.videos %}
+				{{ vid.html() }}
+			{% endfor %}
+			{% for aud in page.media.audio %}
+				{{ aud.html() }}
+			{% endfor %}
+				</div>
+		    </div>
+		</section>
+	</div>
+    {% endblock %}
+    {% endembed %}
+{% endif %}

@@ -1,0 +1,16 @@
+name: AlphaState
+version: 1.0.0
+description: "Based on solid state, made for Alphalab."
+icon: desktop
+author:
+  name: Emily Kolar
+  email: emkolardev@gmail.com
+  url: http://104.236.42.90/
+homepage: https://github.com/sheminusminus/alphalab
+demo: http://104.236.42.90/
+keywords: "theme, responsive, html5, custom"
+bugs: https://github.com/sheminusminus/alphalab/issues
+license: MIT
+
+form:
+  validation: loose

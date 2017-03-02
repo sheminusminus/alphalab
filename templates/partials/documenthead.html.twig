@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+    	<title>{% if header.title %}{{ header.title|e('html') }} | {% endif %}{{ site.title|e('html') }}</title>
+    	<link rel="icon" type="image/png" href="{{ url('theme://images/favicon.png') }}" />
+		<link rel="canonical" href="{{ page.url(true, true) }}" />
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        
+		{% block stylesheets %}
+        	{% include 'partials/stylesheets.html.twig' %}	
+		{% endblock %}
+		{{ assets.css() }} 
+    </head>
+    
+	{% set sitewide = page.find('/sitewide') %}
+	{% set taxonParam = uri.param('param1') ? uri.param('param1') : '' %}
+	{% set taxonParam2 = uri.param('param2') ? uri.param('param2') : '' %}
+    
+    
+    <body id="pagebody" class="{{ page.header.body_classes }}">
+        <!-- Page Wrapper -->
+        <div id="page-wrapper">          
+            {% include 'partials/header.html.twig' %}         
+			
+			{% block content %}
+			{% endblock %}
+
+            {% include 'partials/footer.html.twig' %}
+        </div>
+        
+        <!-- Scripts -->
+        {% block javascripts %}
+        	{% include 'partials/scripts.html.twig' %}
+		{% endblock %}
+        {{ assets.js() }}
+
+    </body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+<div class="wrapper"><div class="inner">
+	<div id="error">
+		<div>
+			<h1>{{ 'ERROR'|t }} {{ page.header.http_response_code }}</h1>
+			<p>
+				{% set m = random(page.header.messages) %}
+					{{ m.message }}<br/>
+				{{ page.content }}				
+			</p>
+		</div>
+	</div>
+</div></div>
+{% endblock %}

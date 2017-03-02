@@ -1,0 +1,15 @@
+title: Work Category
+'@extends':
+    type: work_category
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      active: 1
+
+      fields:
+        content:
+          type: tab
+          title: Work
+

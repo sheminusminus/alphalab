@@ -1,0 +1,32 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+	{% set icons = ['fa-long-arrow-right', 'fa-youtube-play', 'fa-camera-retro', 'fa-gamepad', 'fa-gamepad', 'fa-headphones'] %}
+	{% set iconidx = 0 %}
+	{% set pattern = sitewide.media[sitewide.header.pattern].url() %}
+	<div id="contentWrapper">
+        <section class="heading shorter">
+			<div id="background" style="background-image: url({{ pattern }});"></div>
+			<div id="foreground">
+					<h2 id="areaTitle" class="center listHeader">{% include 'partials/breadcrumbs.html.twig' %}</h2>
+					<ul class="resource-list" style="list-style: none;">
+						{% for category in page.find('/resources').children() %}
+							{% set catUrl = category.url|absolute_url %}
+							{% set classes = '' %}
+							{% if page.find('/resources').activeChild == false %}
+{# 							{% set classes = category.header.title|lower == 'department' ? 'show' : '' %} #}
+							{% set classes = category.header.title|lower == 'department' ? 'active' : '' %}
+							{% else %}
+							{% set classes = category.active or category.activeChild ? 'active' : '' %}
+							{% endif %}
+							<li class="res">
+								<a href="{{ catUrl }}">{# <i class="fa {{ icons[iconidx] }} {{ classes }}"></i> #}<span class="{{ classes }}">{{ category.header.title }}</span></a>
+							</li>
+							{% set iconidx = iconidx + 1 %}
+					{% endfor %}
+				</ul>
+			</div>
+		</section>
+	</div>
+{% endblock %}
+

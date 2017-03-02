@@ -1,0 +1,14 @@
+title: Resource
+'@extends':
+    type: default
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      active: 1
+
+      fields:
+        content:
+          type: tab
+          title: Resource Info

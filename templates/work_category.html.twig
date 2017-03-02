@@ -1,0 +1,25 @@
+{% embed 'partials/categorybase.html.twig' %}
+
+	{% block content %}
+
+		{% set work = page.header.work %}
+		
+		{{ page.title }}
+		<br/>
+		{{ page.media.images.first.html() }}
+		<br/>
+		{{ page.header.major }}
+		<br/>
+		{{ page.content }}
+		<br/>
+		{% for w in work %}
+			{% set workPage = page.find(w) %}
+			{{ workPage.header.title }}
+			{{ workPage.media.images.first.html() }}
+		{% endfor %}
+
+	{% endblock %}
+
+{% endembed %}
+
+

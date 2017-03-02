@@ -1,0 +1,46 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+	{% set pattern = sitewide.media[sitewide.header.pattern].url() %}
+	{% set index = 0 %}
+	<div id="contentWrapper">
+        <section class="heading">
+        	<div id="background" style="background-image: url({{ pattern }});"></div>
+        	<div id="foreground">
+				<div class="content">
+					<h2 id="areaTitle" class="center">{{ page.header.title }}</h2>
+	    			{{ page.content }}
+				</div>
+        	</div>
+    	</section>
+    
+	    {% for module in page.find('/home').children.visible %}
+	    <section class="heading">
+	    <div class="foreground">
+	    <div class="content">
+		    <div class="blogItem{{ index % 2 == 0 ? ' spotlight' : '' }}">
+		    	<h4 class="blogTitle">{{ module.title }}</h4>
+		        {{ module.content }}
+		        {% for vid in module.media.videos %}
+		        <div class="blogVideo">
+		        	<video src="{{vid.url|absolute_url}}" {{ index == 0 ? 'preload' : 'preload="none"'}} controls>
+		   
+		        	</video>
+		        </div>
+		        {% endfor %}
+		        {% for img in module.media.images %}
+		        <div class="blogImage">
+		        	{{ img.html() }}
+		        </div>
+		        {% endfor %}
+		        {% set index = index + 1 %}
+		    </div>
+	    </div>
+	    </div>
+	    </section>
+		{% endfor %}
+		{{ parent() }}
+	    
+	</div>
+		
+{% endblock %}

@@ -1,0 +1,23 @@
+title: About
+'@extends':
+    type: default
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+    active: 1
+      fields:
+        content:
+          type: tab
+          title: Page Content
+          fields:
+            content:
+              type: markdown
+              label: Page Text
+		    header.email:
+		      type: text
+		      label: Email
+		    header.other:
+		      type: text
+		      label: Other Method

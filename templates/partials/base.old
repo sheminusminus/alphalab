@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+    	<title>{% if header.title %}{{ header.title|e('html') }} | {% endif %}{{ site.title|e('html') }}</title>
+    	<link rel="icon" type="image/png" href="{{ url('theme://images/favicon.png') }}" />
+		<link rel="canonical" href="{{ page.url(true, true) }}" />
+		
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+        {% block stylesheets %}
+	
+	        {% do assets.addCss('theme://styles/normalize.min.css') %}
+			{% do assets.addCss('theme://styles/custom.css') %}
+
+		{% endblock %}
+    {{ assets.css() }} 
+	    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet">
+    </head>
+
+	{% set sitewide = page.find('/sitewide') %}
+	
+    <body id="pagebody" class="{{ page.header.body_classes }}" style="background-image: url({{ sitewide.media[sitewide.header.pattern].url() }}">
+        <!-- Page Wrapper -->
+        <div id="page-wrapper">      
+        	{% if page.title != 'Screencasts' %}    
+				{% include 'partials/header.html.twig' %}   
+			{% endif %}
+			
+            {% block content %}
+            {% endblock %}
+
+            {% include 'partials/footer.html.twig' %}
+        </div>
+        
+        <!-- Scripts -->
+		{% do assets.addJs('theme://javascripts/materialize.min.js') %}
+		{% do assets.addJs('theme://javascripts/custom.js') %}
+
+        {{ assets.js() }}
+		<script>
+			window.addEventListener('load', function() {
+				var header = document.querySelector('#headerImage');
+				var heading = document.querySelectorAll('.heading')[0];
+			 	document.body.addEventListener('scroll', function(evt) {
+				 	var headerPos = header.getBoundingClientRect().top;
+				 	var headingPos = heading.getBoundingClientRect().bottom;
+				 	if (headerPos > headingPos) {
+					 	header.classList.add('hidden');
+				 	}
+				 	else {
+					 	header.classList.remove('hidden');
+				 	}
+				 	
+			 	});
+		 	});
+		</script>
+    </body>
+</html>

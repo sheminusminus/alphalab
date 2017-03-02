@@ -1,0 +1,33 @@
+{
+  "name": "alphalab-website",
+  "version": "1.0.0",
+  "description": "website and grav theme made for columbia college chicago's alphalab to showcase games and share screencasts, etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sheminusminus/alphalab.git"
+  },
+  "author": "emily kolar <emkolardev@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sheminusminus/alphalab/issues"
+  },
+  "homepage": "https://github.com/sheminusminus/alphalab#readme",
+  "devDependencies": {
+    "autoprefixer": "^6.4.0",
+    "cssnano": "^3.7.4",
+    "grunt": "^1.0.1",
+    "grunt-contrib-imagemin": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-postcss": "^0.8.0",
+    "pixrem": "^3.0.1"
+  },
+  "dependencies": {
+    "foundation-sites": "^6.2.3"
+  }
+}

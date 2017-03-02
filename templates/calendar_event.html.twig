@@ -1,0 +1,86 @@
+<!-- Wrapper -->
+{% if index is defined %} 
+	{% set taxons = [] %}
+	{% for tax in module.taxonomy|ksort %}
+		{% for key, value in tax %}
+			{% set taxons = taxons|merge([value]) %}
+		{% endfor %}
+	{% endfor %}
+    {% set modId = str_replace(' ', '-', module.header.title|lower) %}
+    {% if index % 2 == 0 %}
+	    <section id="{{ modId }}" class="module heading{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+	        <div class="moduleContent">
+	            <div class="content">
+{#
+	                <a href="{{ module.url|absolute_url }}">
+	                	<h2 class="workTitle">
+	                		{{ module.header.title }} <i class="fa fa-arrow-circle-o-right"></i>
+	                	</h2>
+	                	<h4 class="creator">
+	                		{{ module.header.student }}<br/>
+	                		<h5>{% for cat in taxons %}
+	                			[ {{ cat }} ]
+	                		{% endfor %}</h5>
+	                	</h4>
+		            	<div class="mainImage">{{ module.media[module.header.mainimage] }}</div>
+					</a>
+#}
+	                {{ module.content|markdown }}
+	            </div>
+	        </div>
+	    </section>
+	{% else %}
+	    <section id="{{ modId }}" class="module heading spotlight{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+	        <div class="moduleContent">
+	            <div class="content">
+{#
+	                <a href="{{ module.url|absolute_url }}">
+	                	<h2 class="workTitle">
+	                		<i class="fa fa-arrow-circle-o-left"></i> {{ module.header.title }}
+	                	</h2>
+	                	<h4 class="creator">
+	                		{{ module.header.student }}<br/>
+	                		<h5>{% for cat in taxons %}
+	                			[ {{ cat }} ]
+	                		{% endfor %}</h5>
+	                	</h4>
+		            	<div class="mainImage">{{ module.media[module.header.mainimage] }}</div>
+	                </a>
+#}
+	                {{ module.content|markdown }}
+	            </div>
+	        </div>
+	    </section>
+	{% endif %}
+{% else %}
+	{% set taxons = [] %}
+	{% for tax in page.taxonomy|ksort %}
+		{% for key, value in tax %}
+			{% set taxons = taxons|merge([value]) %}
+		{% endfor %}
+	{% endfor %}
+	{% embed 'partials/base.html.twig' %}
+	{% block content %}
+    {% set modId = str_replace(' ', '-', page.header.title|lower) %}
+	<div id="contentWrapper">
+		<section id="{{ page.title }}" class="module heading{% for cat in taxons %}{{ ' ' ~ cat }}{% endfor %}">
+		    <div class="moduleContent">
+		        <div class="content">
+{#
+		            <h2 class="workTitle">{{page.title }}</h2>
+		            <h4 class="creator">
+	                	{{ page.header.student }}
+	                </h4>
+	                <h5>{% for cat in taxons %}
+	                	[ {{ cat }} ]
+	                {% endfor %}</h5>
+		            	<div id="mainImage">{{ page.media[page.header.mainimage] }}</div>
+#}
+						{{ page.content|markdown }}
+		        </div>
+		    </div>
+		</section>
+	</div>
+    {% endblock %}
+    {% endembed %}
+{% endif %}

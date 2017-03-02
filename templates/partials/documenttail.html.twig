@@ -1,0 +1,17 @@
+            {% include 'partials/footer.html.twig' %}
+        </div>
+        
+        <!-- Scripts -->
+        {% do assets.addJs('theme://assets/js/skel.min.js') %}
+        {% do assets.addJs('theme://assets/js/jquery.min.js') %}
+        {% do assets.addJs('theme://assets/js/jquery.scrollex.min.js') %}
+        {% do assets.addJs('theme://assets/js/util.js') %}
+        {% do assets.addJs('theme://assets/js/main.js') %}
+        {% do assets.addJs('theme://assets/scripts/scripts.min.js') %}
+        {% if page.template() == 'modular' %}
+        	{% do assets.addJs('theme://assets/js/modular.js') %}
+        {% endif %}
+        {{ assets.js() }}
+
+    </body>
+</html>

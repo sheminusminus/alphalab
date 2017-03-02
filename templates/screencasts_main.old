@@ -1,0 +1,26 @@
+{% extends 'partials/base.html.twig' %}
+
+{% block content %}
+	{% set pattern = sitewide.media[sitewide.header.pattern].url() %}
+	{% set logo = sitewide.media[sitewide.header.logoimage].url() %}
+	{% set index = 0 %}
+	<div id="contentWrapper">
+        	<div id="background" style="background-image: url({{ logo }});"></div>
+        	<div id="foreground">
+				<div class="content">
+					<h2>{{ page.header.title }}</h2>
+	    			{{ page.content }}
+				</div>
+        	</div>
+    
+	    {% for module in page.collection() %}
+		    <div class="module">
+		        {% include 'student_work.html.twig' %}
+		        {% set index = index + 1 %}
+		    </div>
+		{% endfor %}
+		{{ parent() }}
+	    
+	</div>
+		
+{% endblock %}

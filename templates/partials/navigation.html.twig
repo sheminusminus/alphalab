@@ -1,0 +1,46 @@
+{% macro loop(page, param, param2, queries, idx) %}
+    {% for p in page.children.visible %}
+    	{% set url_p = p.url|absolute_url %}
+        {% set slug = str_replace(' ', '-', p.title|lower) %}
+        {% set current_page = (p.active or p.activeChild or param == slug or param2 == slug) ? 'active' : '' %}
+        {% set activeParent = '' %}
+        {% set queryString = queries is not empty ? queries : '' %}
+        {% if p.title == 'Student Works' %}
+        	{% set p = page.find('/work') %}
+        {% endif %}
+        {% if p.parent().title == 'Work Categories' or p.parent().parent().title == 'Work Categories' %}
+        	{% set queryString = queryString ~ '/' ~ 'param' ~ idx ~ ':' ~ slug %}
+        	{% set url_p = page.find('/student-works').url ~ queryString %}
+        	{% if p.active or p.activeChild %}
+        		{% set activeParent = 'active' %}
+        	{% endif %}
+        {% endif %}
+        {% if p.title == 'Art' %}
+	        {{ _self.loop(p, param, param2, queryString, idx + 1) }}
+        {% else %}
+        <li id="{{ slug ~ '-link' }}" class="{{ p.children.count > 0 ? 'has-submenu' : '' }}">
+            <a href="{{ url_p is empty ? p.url|absolute_url : url_p }}" class="{{ current_page }}{{ activeParent }}">
+				{% if p.parent().parent().title == 'Work Categories' %}{{ p.menu ~ ' ' ~ p.parent().title }}
+				{% else %}{{ p.title == 'Work Categories' ? 'Student Works' : p.menu }}
+				{% endif %}
+            </a>
+{#
+            {% if p.title|lower == 'about' %}
+				<a href="https://www.facebook.com/IAMColumbiaCollegeChicago/?ref=br_rs"><i class="fa fa-facebook"></i> Facebook</a>
+				<a href="#"><i class="fa fa-globe"></i> IAM Site</a>
+			{% endif %}
+#}
+            {% if p.children.visible.count > 0 and p.parent().title != 'Work Categories' %}
+                <ul class="menu submenu subMenu">
+                    {{ _self.loop(p, param, param2, queryString, idx + 1) }}
+                </ul>
+            {% endif %}
+        </li>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+  <ul class="dropdown menu mainMenu">
+      {{ _self.loop(pages, (taxonParam is empty ? 'none' : taxonParam), (taxonParam2 is empty ? 'none' : taxonParam2), '', 0) }}
+  </ul>
+ 

@@ -1,0 +1,19 @@
+title: Sitewide
+'@extends':
+    type: sitewide
+    context: blueprints://pages
+
+form:
+  fields:
+    tabs:
+      active: 1
+
+      fields:
+        content:
+          type: tab
+          title: Content
+          fields:
+            header.title:
+              disabled: true
+              placeholder: Sitewide
+

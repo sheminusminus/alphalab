@@ -1,0 +1,185 @@
+{% extends 'partials/base.html.twig' %}
+{% set taxon1 = uri.param('param1') %}
+{% set taxon2 = uri.param('param2') %}
+{% set blurb = '' %}
+
+{% macro optionloop(page, param, queries, idx) %}
+    {% for p in page.children.visible %}
+    	{% set url_p = p.url|absolute_url %}
+        {% set slug = str_replace(' ', '-', p.title|lower) %}
+        {% set current_page = (p.active or p.activeChild or param == slug) ? 'active' : '' %}
+        {% set activeParent = '' %}
+        {% set queryString = queries is not empty ? queries : '' %}
+        {% if p.title == 'Student Works' %}
+        	{% set p = page.find('/work') %}
+        {% endif %}
+        {% if p.parent().title == 'Work Categories' or p.parent().parent().title == 'Work Categories' %}
+        	{% set queryString = queryString ~ '/' ~ 'param' ~ idx ~ ':' ~ slug %}
+        	{% set url_p = page.find('/student-works').url ~ queryString %}
+        	{% if p.active or p.activeChild %}
+        		{% set activeParent = 'active' %}
+        	{% endif %}
+        {% endif %}
+        <option id="{{ slug ~ '-opt' }}" class="{{ p.children.count > 0 ? 'has-submenu' : '' }}" value="{{ slug }}">
+				{{ p.title }}
+            {% if p.children.visible.count > 0 and p.parent().title != 'Work Categories' %}
+                    {{ _self.optionloop(p, slug, queryString, idx + 1) }}
+            {% endif %}
+        </option>
+    {% endfor %}
+{% endmacro %}
+
+{% macro subloop(page, param, queries, idx) %}
+    {% for p in page.children.visible %}
+    	{% set url_p = p.url|absolute_url %}
+        {% set slug = str_replace(' ', '-', p.title|lower) %}
+        {% set current_page = (p.active or p.activeChild or param == slug) ? 'active' : '' %}
+        {% set activeParent = '' %}
+        {% set queryString = queries is not empty ? queries : '' %}
+        {% if p.title == 'Student Works' %}
+        	{% set p = page.find('/work') %}
+        {% endif %}
+        {% if p.parent().title == 'Work Categories' or p.parent().parent().title == 'Work Categories' %}
+        	{% set queryString = queryString ~ '/' ~ 'param' ~ idx ~ ':' ~ slug %}
+        	{% set url_p = page.find('/student-works').url ~ queryString %}
+        	{% if p.active or p.activeChild %}
+        		{% set activeParent = 'active' %}
+        	{% endif %}
+        {% endif %}
+        <option id="{{ slug ~ '-opt' }}" class="{{ p.children.count > 0 ? 'has-submenu' : '' }}" value="{{ slug }}">
+				{{ p.title }}
+        </option>
+    {% endfor %}
+{% endmacro %}
+
+{% block content %}
+	{% set index = 0 %}
+	{% set pattern = sitewide.media[sitewide.header.pattern].url() %}
+	<div id="contentWrapper">
+		 <section class="heading filters" id="top">
+			<div id="background" style="background-image: url({{ pattern }});"></div>
+        	<div id="foreground">
+        	
+				<div class="content" id="scrollbox">
+					<h2 id="areaTitle" class="center">Student Work{{ taxon1 is not empty ? "  >  " ~ taxon1 }} {{ taxon2 is not empty ? "  >  " ~ taxon2 }}</h2>
+					{% set workpage = page.find('/work') %}
+					
+					<div id="options">						
+						<ul class="submissions">
+								<h4>Want us to feature your work?</h4>
+								{% if taxon1 is not empty %}
+									<div id="blurb">
+										{% set p = page.find('/work/' ~ uri.param('param1')) %}
+										{{ p.content }}
+										<a href="#" id="showform"><i class="fa fa-plus"></i> Attach & Send</a>
+										<div id="hideForm">
+ 											{% include 'send.html.twig' %}
+										</div>
+									</div>
+								{% else %}
+									<div id="blurb">
+										{% set p = page.find('/work/' ~ uri.param('param1')) %}
+										<p href="#" id="showform">Choose a category below, then attach & send.</p>
+									</div>
+								{% endif %}
+						</ul>
+						<div id="catList">
+							<h4>Browse</h4><br/>
+							<select class="cat-list select-cat" id="select-cat">
+								<option value="Categories" default>Categories</option>
+								{% set workpage = page.find('/work') %}
+								
+								{{ _self.optionloop(workpage, '', '', '', 1) }}
+							</select>
+							{% if taxon1 is not empty %}
+								<select class="cat-list select-cat" id="select-subcat">
+									<option value="Categories" default>Categories</option>
+									{% set p = page.find('/work/' ~ taxon1) %}
+									{{ _self.subloop(p, '', '', '', 1) }}
+								</select>
+							{% endif %}
+						</div>
+					</div>
+					
+					<div class="gravContent">
+						{{ page.content }}
+					</div>
+				</div>	
+        	</div>
+	    </section>
+	{% if taxon2 is not empty %}
+		<div class="grid">
+		    {% for module in taxonomy.findTaxonomy({'categories': taxon2}) %}
+		        {% include 'student_work.html.twig' %}
+		        {% set index = index + 1 %}
+			{% endfor %}
+		</div>
+	{% else %}
+		{% if taxon1 is not empty %}
+			<div class="grid">
+			    {% for module in taxonomy.findTaxonomy({'categories': taxon1}) %}
+			        {% include 'student_work.html.twig' %}
+			        {% set index = index + 1 %}
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="grid">
+			{% for module in page.children %}
+		        {% include 'student_work.html.twig' %}
+		        {% set index = index + 1 %}
+			{% endfor %}
+			</div>
+		{% endif %}	
+	{% endif %}
+	</div>
+	
+	<script>
+		window.addEventListener('load', function() {
+			var sel = document.getElementById('select-cat');
+			var subsel = document.getElementById('select-subcat');
+			var param = window.location.href.split('param1:')[1];
+			if (param) {
+				if (param.indexOf('/param2') > 0) {
+					var param2 = param.split('param2:')[1];
+					param = param.split('/')[0];
+					for (var i = 0; i < subsel.options.length; i++) {
+						if (subsel.options[i].value == param2) {
+							subsel.options[i].setAttribute('selected', '');
+						}
+					}
+				}
+				for (var i = 0; i < sel.options.length; i++) {
+					if (sel.options[i].value == param) {
+						sel.options[i].setAttribute('selected', '');
+					}
+				}
+			}
+			sel.addEventListener('change', function(evt) {
+				console.log(sel.value);
+				var param = sel.value;
+				var params = '/param1:' + param;
+				window.location.assign('{{ page.find('/student-works').url|absolute_url }}' + params);
+			});
+			if (!subsel) {
+				return;
+			}
+			subsel.addEventListener('change', function(evt) {
+				console.log(sel.value);
+				var param = sel.value;
+				var param2 = subsel.value;
+				var params = '/param1:' + param + '/param2:' + param2;
+				window.location.assign('{{ page.find('/student-works').url|absolute_url }}' + params);
+			});
+		});
+		
+		document.querySelector('#showform').addEventListener('click', function(evt) {
+			evt.preventDefault();
+			var form = document.querySelector('#hideForm');
+			form.classList.toggle('show');	
+		});
+		
+	</script>
+
+{% endblock %}
+
+

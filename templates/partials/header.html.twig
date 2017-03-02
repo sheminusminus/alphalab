@@ -1,0 +1,19 @@
+<header id="header">
+	{% set sitewide = page.find('/sitewide') %}
+	{% set header = sitewide.media[sitewide.header.headerimage].url() %}
+	{% set logo = sitewide.media[sitewide.header.logoimage].url() %}
+	
+	
+	<div id="headerImage"></div>
+	<div id="headerContent">
+		<a href="/" id="identifiers">
+			<div id="logo" style="background-image: url({{ logo }});"></div>
+			<div id="sitename">{{ site.title }}</div>
+		</a>
+		<nav id="mainNav">
+				{% include 'partials/navigation.html.twig' %}
+		</nav>
+	</div>
+		
+		<a href="#" id="menuToggle">Menu</a>
+</header>
